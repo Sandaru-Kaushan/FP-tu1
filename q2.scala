@@ -1,18 +1,26 @@
-object NumberPatternMatching {
-  def main(args: Array[String]): Unit = {
-    // Check if an input is provided
-    if (args.length != 1) {
-      println("Please provide a single integer input.")
-    } else {
-      // Convert the input string to an integer
-      val input = args(0).toInt
+object NumberCategorizer {
 
-      // Use pattern matching to determine the output
-      input match {
-        case x if x <= 0 => println("Negative/Zero is input")
-        case x if x % 2 == 0 => println("Even number is given")
-        case _ => println("Odd number is given")
-      }
+  // Lambda functions for each case
+  val multipleOfThree: Int => Boolean = _ % 3 == 0
+  val multipleOfFive: Int => Boolean = _ % 5 == 0
+  val multipleOfBoth: Int => Boolean = n => multipleOfThree(n) && multipleOfFive(n)
+
+  // Function to categorize the number using pattern matching
+  def categorizeNumber(n: Int): String = n match {
+    case _ if multipleOfBoth(n) => "Multiple of Both Three and Five"
+    case _ if multipleOfThree(n) => "Multiple of Three"
+    case _ if multipleOfFive(n) => "Multiple of Five"
+    case _ => "Not a Multiple of Three or Five"
+  }
+
+  // Main method to take input and print the result
+  def main(args: Array[String]): Unit = {
+    try {
+      val input = args.head.toInt
+      println(categorizeNumber(input))
+    } catch {
+      case _: NumberFormatException => println("Invalid input. Please enter a valid integer.")
+      case _: NoSuchElementException => println("No input provided. Please enter an integer.")
     }
   }
 }
