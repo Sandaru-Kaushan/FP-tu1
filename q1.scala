@@ -1,48 +1,35 @@
-object InventoryManagement {
-  var itemNames: Array[String] = Array("Apples", "Bananas", "Oranges")
-  var itemquantities: Array[Int] = Array(10, 5, 8)
+object CaesarCipher {
 
+  def encrypt(text: String, shift: Int): String = {
+    text.map {
+      case c if c.isLetter =>
+        val base = if (c.isLower) 'a' else 'A'
+        ((c - base + shift) % 26 + base).toChar
+      case c => c // Non-alphabetic not shifted
+    }
+  }
   
-  def displayinven(): Unit = {
-    println("Inventory:")
-    for (i <- itemNames.indices) {
-      println(s"${itemNames(i)}: ${itemquantities(i)}")
+  def decrypt(text: String, shift: Int): String = {
+    text.map {
+      case c if c.isLetter =>
+        val base = if (c.isLower) 'a' else 'A'
+        ((c - base - shift + 26) % 26 + base).toChar
+      case c => c // Non-alphabetic not shifted
     }
   }
 
-  // Function to restock an item
-  def restockItem(itemName: String, quantity: Int): Unit = {
-    val index = itemNames.indexOf(itemName)
-    if (index != -1) {
-      itemQuantities(index) += quantity
-      println(s"Restocked $quantity $itemName(s). New quantity: ${itemquantities(index)}")
-    } else {
-      println(s"""Item "$itemName" not found in inventory.""")
-    }
-  }
-
-  // Function to sell an item
-  def sellItem(itemName: String, quantity: Int): Unit = {
-    val index = itemNames.indexOf(itemName)
-    if (index != -1) {
-      if (itemquantities(index) >= quantity) {
-        itemquantities(index) -= quantity
-        println(s"Sold $quantity $itemName(s). Remaining quantity: ${itemquantities(index)}")
-      } else {
-        println(s"Not enough $itemName in inventory to sell. Available quantity: ${itemQuantities(index)}")
-      }
-    } else {
-      println(s"""Item "$itemName" not found in inventory.""")
-    }
+  def cipher(text: String, shift: Int, func: (String, Int) => String): String = {
+    func(text, shift)
   }
 
   def main(args: Array[String]): Unit = {
-    displayinven()
-    restockItem("Bananas", 10)
-    sellItem("Oranges", 5)
-    displayinven()
-    sellItem("Grapes", 3)
-    restockItem("Grapes", 20)
-    displayinven()
+    val plaintext = "Hello, World!"
+    val shift = 3
+
+    val encryptedText = cipher(plaintext, shift, encrypt)
+    println(s"Encrypted: $encryptedText")
+
+    val decryptedText = cipher(encryptedText, shift, decrypt)
+    println(s"Decrypted: $decryptedText")
   }
 }
