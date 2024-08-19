@@ -1,32 +1,23 @@
-object StringFormatter {
+object NameFormatter {
 
-  def toUpper(str: String): String = str.toUpperCase
+  //convert to uppercase
+  def toUpper(name: String): String = name.toUpperCase
 
-  def toLower(str: String): String = str.toLowerCase
+  //convert to lowercase
+  def toLower(name: String): String = name.toLowerCase
 
-  def formatNames(name: String)(formatFunc: String => String): String = {
-    formatFunc(name)
-  }
+  def formatNames(name: String)(formatFunction: String => String): String = formatFunction(name)
 
   def main(args: Array[String]): Unit = {
-    val names = List("Benny", "Niroshan", "Saman", "Kumara")
+    // Test inputs and expected outputs
+    val name1 = formatNames("Benny")(toUpper)
+    val name2 = formatNames("Niroshan")(name => name.substring(0, 2).toUpperCase + name.substring(2).toLowerCase)
+    val name3 = formatNames("Saman")(toLower)
+    val name4 = formatNames("Kumara")(name => name.substring(0, 1).toUpperCase + name.substring(1, name.length - 1).toLowerCase + name.substring(5,6).toUpperCase)
 
-    val formattedNames = names.map {
-      case "Benny" => formatNames("Benny")(toUpper)
-      case "Niroshan" => formatNames("Niroshan") { name =>
-        val part1 = name.substring(0, 2).toUpperCase
-        val part2 = name.substring(2).toLowerCase
-        part1 + part2
-      }
-      case "Saman" => formatNames("Saman")(toLower)
-      case "Kumara" => formatNames("Kumara") { name =>
-        val part1 = name.substring(0, 1).toUpperCase
-        val part2 = name.substring(1, 5).toLowerCase
-        val part3 = name.substring(5).toUpperCase
-        part1 + part2 + part3
-      }
-    }
-
-    formattedNames.foreach(println)
+    println(name1) 
+    println(name2) 
+    println(name3)
+    println(name4)
   }
 }
