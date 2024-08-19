@@ -1,35 +1,18 @@
-object CaesarCipher {
+import scala.io.StdIn._
 
-  def encrypt(text: String, shift: Int): String = {
-    text.map {
-      case c if c.isLetter =>
-        val base = if (c.isLower) 'a' else 'A'
-        ((c - base + shift) % 26 + base).toChar
-      case c => c // Non-alphabetic not shifted
-    }
-  }
-  
-  def decrypt(text: String, shift: Int): String = {
-    text.map {
-      case c if c.isLetter =>
-        val base = if (c.isLower) 'a' else 'A'
-        ((c - base - shift + 26) % 26 + base).toChar
-      case c => c // Non-alphabetic not shifted
-    }
+object InterestCalculator extends App {
+
+  val calculateInterest: Double => Double = depositAmount => depositAmount match {
+    case amount if amount <= 20000   => amount * 0.02
+    case amount if amount <= 200000  => amount * 0.04
+    case amount if amount <= 2000000 => amount * 0.035
+    case amount if amount > 2000000  => amount * 0.065
   }
 
-  def cipher(text: String, shift: Int, func: (String, Int) => String): String = {
-    func(text, shift)
-  }
+  println("Enter the deposit amount (in Rs.): ")
+  val depositAmount = readDouble()
 
-  def main(args: Array[String]): Unit = {
-    val plaintext = "Hello, World!"
-    val shift = 3
+  val interest = calculateInterest(depositAmount)
 
-    val encryptedText = cipher(plaintext, shift, encrypt)
-    println(s"Encrypted: $encryptedText")
-
-    val decryptedText = cipher(encryptedText, shift, decrypt)
-    println(s"Decrypted: $decryptedText")
-  }
+  println(s"Interest for a deposit of Rs. $depositAmount is Rs. $interest")
 }
